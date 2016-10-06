@@ -84,7 +84,7 @@ create table utils(
 	unique key `id`(`id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 default CHARSET = utf8 collate = utf8_bin;
 
-alter table addresses add constraint fk_addresses_id_customer_from_customers_id foreign key (id_customer) references customers(id);
+alter table addresses add constraint fk_addresses_id_customer_from_customers_id foreign key (id_customer) references customers(id) on delete cascade;
 alter table orders add constraint fk_orders_id_customer_from_customers_id foreign key d_ol (id_customer) references customers(id);
 alter table orders add constraint fk_orders_id_product_from_products_id foreign key id_product (id_product) references products(id);
 alter table products add constraint fk_products_id_vat_from_vat_id foreign key id_vat (id_vat) references vat(id);
