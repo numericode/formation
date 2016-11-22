@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Ma todolist</title>
+        <style>
+            a {text-decoration: none; color: black;}
+        </style>
+    </head>
+
+    <body>
+        <h1>Ma TODO</h1>
+
+		{% if wholist is defined %}
+        <ul>
+		{% for todo in todolist %}
+			<li><a href="/delete/{{loop.index0}}">✘</a> {{todo}}  
+				{% set who = wholist[loop.index0]%}
+                <select type="select" name="whotask{{loop.index0}}" id="whotask{{loop.index0}}">
+					<option value="Anne" {%if who == 'Anne'%}selected{%endif%}>Anne</option>
+					<option value="Bob" {%if who == 'Bob'%}selected{%endif%}>Bob</option>
+					<option value="Charles" {%if who == 'Charles'%}selected{%endif%}>Charles</option>
+					<option value="Doris" {%if who == 'Doris'%}selected{%endif%}>Doris</option>
+
+				</select>
+				<span id="wholabel{{loop.index0}}">{{who}}</span>  -  
+				<span><b><a href="/up/{{loop.index0}}">U</a></b></span> - 
+				<span><b><a href="/down/{{loop.index0}}">D</a></b></span> 
+				</li>
+		{% endfor %}
+        </ul>
+		{% endif %}
+        <form action="/add" method="get">
+            <p>
+                <label for="newtodo">Que dois-je faire ?</label>
+                <input type="text" name="newtodo" id="newtodo" autofocus />
+                <select type="select" name="who" id="who">
+					<option value="Anne">Anne</option>
+					<option value="Bob">Bob</option>
+					<option value="Charles">Charles</option>
+					<option value="Doris">Doris</option>
+				</select>
+                <input type="submit" />
+				<a href="/clear/">✘</a>
+				<a href="/wholist/">W</a>
+            </p>
+        </form>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script>
+		$(document).ready(function(){
+			{% for todo in todolist %}
+			{% set who = wholist[loop.index0] %}
+			$('#whotask{{loop.index0}}').on('change', function(event){
+				var url='/selectbox/'+{{loop.index0}}+'/'+event.target.value;
+				$.ajax(url).done(function(){
+			//		console.log('ajax is done');
+					$('#wholabel{{loop.index0}}').text(event.target.value);
+				});
+			});
+		{% endfor %}
+		});
+		</script>
+    </body>
+</html>
